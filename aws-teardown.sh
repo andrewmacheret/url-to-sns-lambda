@@ -29,9 +29,16 @@ if [ ! -z "$LAMBDA_FUNCTION_NAME" ]; then
   aws lambda delete-function --function-name "$LAMBDA_FUNCTION_NAME" || true
 fi
 
-if [ ! -z "$RULE_NAME" ]; then
-  echo "Deleting rule $RULE_NAME"
-  aws events delete-rule --name "$RULE_NAME"
+if [ ! -z "$RULE1_NAME" ]; then
+  echo "Deleting rule $RULE1_NAME"
+  aws events remove-targets --rule "$RULE1_NAME" --ids 1
+  aws events delete-rule --name "$RULE1_NAME"
+fi
+
+if [ ! -z "$RULE2_NAME" ]; then
+  echo "Deleting rule $RULE2_NAME"
+  aws events remove-targets --rule "$RULE2_NAME" --ids 1
+  aws events delete-rule --name "$RULE2_NAME"
 fi
 
 rm -f .env

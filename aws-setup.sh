@@ -94,7 +94,7 @@ aws events put-targets \
   --targets '{
     "Id": "1",
     "Arn": "'"$LAMBDA_FUNCTION_ARN"'",
-    "Input": "{\"sns\": \"'"${RULE1_SNS_TOPIC_ARN}"'\"}"
+    "Input": "'"$( echo "$RULE1_INPUT" | python -c 'import sys, json; print(json.dumps(json.load(sys.stdin)))' | perl -p -e 's/\\/\\\\/g' | perl -p -e 's/"/\\"/g' )"'"
 }'
 
 ### rule 2
@@ -126,7 +126,7 @@ aws events put-targets \
   --targets '{
     "Id": "1",
     "Arn": "'"$LAMBDA_FUNCTION_ARN"'",
-    "Input": "{\"sns\": \"'"${RULE2_SNS_TOPIC_ARN}"'\"}"
+    "Input": "'"$( echo "$RULE2_INPUT" | python -c 'import sys, json; print(json.dumps(json.load(sys.stdin)))' | perl -p -e 's/\\/\\\\/g' | perl -p -e 's/"/\\"/g' )"'"
 }'
 
 ###

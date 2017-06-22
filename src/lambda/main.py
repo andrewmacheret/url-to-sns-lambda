@@ -2,23 +2,33 @@
 
 import json
 import os
-from requests import get
+from requests import Request, Session
 import pprint
 import boto3
 
 pp = pprint.PrettyPrinter(indent=4)
 
-pun_url = 'https://pun.andrewmacheret.com'
-
 def lambda_handler(event, context):
     pp.pprint(event)
-    aws_sns_topic_arn = event['sns']
 
-    response = get(pun_url)
+    aws_sns_topic_arn = event['sns']
+    url = event['url']
+    method = event.get('method', 'GET')
+    headers = event.get('headers')
+    body = event.get('body')
+
+    session = Session()
+    request = Request(method, url).prepare()
+    if headers is not None:
+        request.headers = headers
+    if body is not None:
+        request.body = body
+    response = session.send(request)
+
     if response.status_code == 200:
-        pun = response.json()['pun']
-        pp.pprint(pun)
-        publish_command_to_sns(aws_sns_topic_arn, pun)
+        content = response.text
+        pp.pprint(content)
+        publish_command_to_sns(aws_sns_topic_arn, content)
     else:
         pp.pprint(response)
 

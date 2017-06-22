@@ -1,12 +1,22 @@
-ROLE_NAME="PunToText"
-LAMBDA_FUNCTION_NAME="PunToText"
+ROLE_NAME="UrlToSns"
+LAMBDA_FUNCTION_NAME="UrlToSns"
 
-RULE1_NAME="PunToText-SchedulingRule-a1"
+RULE1_NAME="UrlToSns-SchedulingRule-a1"
 RULE1_EXPRESSION="cron(0 16 * * ? *)"
 RULE1_EXPRESSION_DESCRIPTION="every day at 16:00 UTC"
-RULE1_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:515875352897:a1"
+RULE1_INPUT='{
+  "url": "https://pun.andrewmacheret.com",
+  "headers": {"Accept": "text/plain"},
+  "method": "GET",
+  "sns": "arn:aws:sns:us-east-1:515875352897:a1"
+}'
 
-RULE2_NAME="PunToText-SchedulingRule-mjc"
+RULE2_NAME="UrlToSns-SchedulingRule-mjc"
 RULE2_EXPRESSION="cron(0 16 * * ? *)"
 RULE2_EXPRESSION_DESCRIPTION="every day at 16:00 UTC"
-RULE2_SNS_TOPIC_ARN="arn:aws:sns:us-east-1:515875352897:mjc"
+RULE2_INPUT='{
+  "url": "https://pun.andrewmacheret.com",
+  "headers": {"Accept": "text/plain"},
+  "method": "GET",
+  "sns": "arn:aws:sns:us-east-1:515875352897:mjc"
+}'
